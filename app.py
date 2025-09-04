@@ -214,6 +214,9 @@ def ask_gemini():
         return jsonify({
             "answer": ai_answer,
             "sentiment_score": sentiment_score
+            "mood_of_day": today_mood,                         # 오늘 무드
+            "day_key": day_key,                                #  KST 기준 날짜 키
+            "offset": offset
         })
 
     except Exception as e:
