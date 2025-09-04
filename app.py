@@ -216,7 +216,8 @@ def ask_gemini():
             "sentiment_score": sentiment_score,
             "mood_of_day": today_mood,                         # 오늘 무드
             "day_key": day_key,                                #  KST 기준 날짜 키
-            "offset": offset
+            "offset": offset,                                  # 테스트 오프셋 회신
+            "ttl_seconds": seconds_until_next_kst_midnight() 
         })
 
     except Exception as e:
