@@ -4,7 +4,6 @@ import google.generativeai as genai
 import datetime
 import json
 
-# 채
 from flask import Response
 
 app = Flask(__name__)
@@ -47,13 +46,13 @@ except Exception as e:
     global_gemini_model = None # 모델 로드 실패 시 None으로 설정
 # --- 모델 인스턴스 생성 끝 ---
 
-# --- day_key & 무드 유틸 ---(채)
+# --- day_key & 무드 유틸 ---
 KST_OFFSET_SEC = 9 * 3600
 MOODS = ["CALM", "ANGRY", "SAD", "HAPPY", "TRICKY"]
 SECRET_SALT = os.environ.get("MOOD_SALT", "replace-with-a-long-random-salt")
 
 def get_kst_day_key(offset_days: int = 0) -> int:
-    """KST(UTC+9) 기준으로 날짜 단위 key를 반환. offset_days로 테스트 이동."""
+    """KST(UTC+9) 기준으로 날짜 단위 key를 반환 offset_days로 테스트 이동"""
     now_utc = datetime.datetime.utcnow()
     kst = now_utc + datetime.timedelta(seconds=KST_OFFSET_SEC) + datetime.timedelta(days=offset_days)
     epoch = datetime.datetime(1970, 1, 1)
@@ -61,7 +60,7 @@ def get_kst_day_key(offset_days: int = 0) -> int:
     return days
 
 def pick_mood_for_day(day_key: int) -> str:
-    """day_key + 솔트로 결정적 무드 선택(서버 재시작/분산환경에서도 동일)."""
+    """day_key 와 솔트로 결정적 무드 선택(서버 재시작/분산환경에서도 동일)."""
     import hashlib, random
     h = hashlib.sha256(f"{day_key}:{SECRET_SALT}".encode("utf-8")).hexdigest()
     seed = int(h[:16], 16)
@@ -69,16 +68,16 @@ def pick_mood_for_day(day_key: int) -> str:
     return rnd.choice(MOODS)
 
 def seconds_until_next_kst_midnight() -> int:
-    """실시간 기준 다음 KST 자정까지 남은 초(캐싱 힌트)."""
+    """실시간 기준 다음 KST 자정까지 남은 초 전달해주기"""
     now_utc = datetime.datetime.utcnow()
     kst = now_utc + datetime.timedelta(seconds=KST_OFFSET_SEC)
     next_midnight_kst = (kst + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
     delta = next_midnight_kst - kst
     return max(1, int(delta.total_seconds()))
-# --- day_key & 무드 유틸 끝 ---(채)
+# --- day_key & 무드 유틸 끝 ---
 
 # ---------------------------------------------------------
-# 오늘의 무드 API (오프셋 지원)(채)
+# 오늘의 무드 API (오프셋 지원)
 # ---------------------------------------------------------
 @app.get("/api/mood-of-day")
 def mood_of_day():
@@ -97,12 +96,12 @@ def mood_of_day():
     payload = {
         "day_key": day_key,
         "mood": mood,
-        "ttl_seconds": ttl,         # 캐시 힌트(실시간 KST 자정 기준)
+        "ttl_seconds": ttl,         # 남은시간(실시간 KST 자정 기준)
         "timezone": "Asia/Seoul",
-        "note": f"offset={offset} (테스트용; 운영에선 생략 권장)"
+        "note": f"offset={offset} #(테스트용, 운영할땐 사용 안할거임)
     }
     return jsonify(payload), 200
-# --- 끝(채)
+# --- 끝
 
 @app.route("/api/ask", methods=["POST"])
 def ask_gemini():
@@ -114,12 +113,12 @@ def ask_gemini():
     persona_id = data.get("persona_id")
     sentiment_tuning_instruction = data.get("sentiment_tuning_instruction", "")
 
-    # 테스트용: ask에도 offset 허용(없으면 0)(채)
+    # 테스트용, ask에도 offset 허용
     try:
         offset = int(data.get("offset", 0))
     except (TypeError, ValueError):
         offset = 0
-    # 테스트용: ask에도 offset 허용(없으면 0)끝
+    # 테스트용, ask에도 offset 허용
     
     if not question:
         return jsonify({"error": "Missing 'question' in request body"}), 400
@@ -143,7 +142,7 @@ def ask_gemini():
         print(f"[{datetime.datetime.now()}] AI model not initialized, cannot process request.")
         return jsonify({"error": "AI model not initialized"}), 500
 
-     # 오늘(또는 offset) 무드 계산(채)
+     # 오늘 무드 계산, (테스트할때도 씀)
     day_key = get_kst_day_key(offset)
     today_mood = pick_mood_for_day(day_key)
     mood_hint = f"오늘의 보스 무드(KST 기준)는 '{today_mood}'입니다. 이 무드에 맞게 어휘/톤/리액션 가중치를 조정하세요."
