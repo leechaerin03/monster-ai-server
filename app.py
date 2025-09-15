@@ -49,18 +49,18 @@ except Exception as e:
 # --- day_key & 무드 유틸 ---
 KST_OFFSET_SEC = 9 * 3600
 MOODS = ["CALM", "ANGRY", "SAD", "HAPPY", "TRICKY"]
-SECRET_SALT = os.environ.get("MOOD_SALT", "replace-with-a-long-random-salt")
+SECRET_SALT = os.environ.get("MOOD_SALT", "BasicSalt") # 현재는 코드에 하드코딩으로 SECRET_SALT값을 지정해놨는데, 보안상 나중에는 하드코딩으로X
 
 def get_kst_day_key(offset_days: int = 0) -> int:
     """KST(UTC+9) 기준으로 날짜 단위 key를 반환 offset_days로 테스트 이동"""
     now_utc = datetime.datetime.utcnow()
     kst = now_utc + datetime.timedelta(seconds=KST_OFFSET_SEC) + datetime.timedelta(days=offset_days)
-    epoch = datetime.datetime(1970, 1, 1)
+    epoch = datetime.datetime(2025, 9, 1)
     days = int((kst - epoch).total_seconds() // 86400)
     return days
 
 def pick_mood_for_day(day_key: int) -> str:
-    """day_key 와 솔트로 결정적 무드 선택(서버 재시작/분산환경에서도 동일)."""
+    """day_key 와 솔트로 결정적 무드 선택(서버 재시작/분산환경에서도 동일하게 적용!)"""
     import hashlib, random
     h = hashlib.sha256(f"{day_key}:{SECRET_SALT}".encode("utf-8")).hexdigest()
     seed = int(h[:16], 16)
@@ -155,7 +155,7 @@ def ask_gemini():
             f"당신은 {selected_persona_name}이라는 이름의 캐릭터입니다. "
             f"당신의 대답은 200자를 넘어가면 안됩니다."
             f"당신의 페르소나는 다음과 같습니다: {selected_persona_desc}\n\n"
-            f"{mood_hint}\n" #채
+            f"{mood_hint}\n" 
             f"사용자의 다음 질문에 대해 당신의 페르소나에 맞춰 답변해주세요. "
             f"**{base_sentiment_guidance}**\n"
         )
