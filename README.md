@@ -43,7 +43,7 @@
 | :---: | :---: |
 | **AI Response**<br>_**“감점 처리하겠습니다.” → 냉정한 평가** | **AI Response**<br>_**“관대하게 처리해 줄 수 있지요” → 관대한 평가** |
 | <img src="image_2.png" width="350" alt="Sad Mood Board"/> | <img src="image _1.png" width="350" alt="Happy Mood Board"/> |
-| **인게임 결과**<br>User: "교수님, 숙제 제출이 늦었어요." | **인게임 결과**<br>User: "교수님, 숙제 제출이 늦었어요." |
+| **인게임 결과**| **인게임 결과**|
 | <img src="image_4.png" width="350" alt="Sad Chat Response"/> | <img src="image_3.png" width="350" alt="Happy Chat Response"/> |
 | [보스의 기분은 포탈 앞 게시판에서 확인 가능] | [보스의 기분은 포탈 앞 게시판에서 확인 가능] |
 
