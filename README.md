@@ -36,3 +36,14 @@
 
 <br>
 
+## 🤖 Generative AI Interaction Examples
+> **"동일한 질문에도 보스의 기분(Mood)에 따라 완전히 다른 답변과 행동 패턴을 보입니다."**
+
+| **Case 1: SAD (슬픔/냉정)** | **Case 2: HAPPY (행복/관대)** |
+| :---: | :---: |
+| **Step 1. 기분 상태 확인**<br>(포탈 앞 게시판) | **Step 1. 기분 상태 확인**<br>(포탈 앞 게시판) |
+| <img src="./assets/image_1.png" width="350" alt="Sad Mood Board"/> | <img src="./assets/image_3.png" width="350" alt="Happy Mood Board"/> |
+| **Step 2. 플레이어 질문**<br>User: "교수님, 숙제 제출이 늦었어요." | **Step 2. 플레이어 질문**<br>User: "교수님, 숙제 제출이 늦었어요." |
+| <img src="./assets/image_2.png" width="350" alt="Sad Chat Response"/> | <img src="./assets/image_4.png" width="350" alt="Happy Chat Response"/> |
+| 🗣️ **AI Response**<br>_**"감점 처리하겠습니다."**_<br>👉 냉정한 평가 및 가차 없는 패턴 | 🗣️ **AI Response**<br>_**"관대하게 처리해 줄 수 있지요."**_<br>👉 유연한 태도 및 쉬운 패턴 |
+
